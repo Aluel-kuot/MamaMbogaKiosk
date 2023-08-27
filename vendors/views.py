@@ -8,19 +8,19 @@ def vendor_upload_view(request):
         form = VendorUploadForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('vendors_list')  # Redirect to the list of vendors after successful upload
+            return redirect('vendor_list')  # Redirect to the list of vendors after successful upload
     else:
         form = VendorUploadForm()
 
-    return render(request, 'vendor/vendor_upload.html', {'form': form})
+    return render(request, 'vendors/vendor_upload.html', {'form': form})
 
-def vendors_list(request):
+def vendor_list(request):
     vendors = Vendor.objects.all()
-    return render(request, 'vendor/vendors_list.html', {'vendors': vendors})
+    return render(request, 'vendors/vendor_list.html', {'vendors': vendors})
 
 def vendor_detail(request, id):
     vendor = Vendor.objects.get(id=id)
-    return render(request, 'vendor/vendor_detail.html', {'vendor': vendor})  # Changed 'product' to 'vendor'
+    return render(request, 'vendors/vendor_detail.html', {'vendor': vendor})  # Changed 'product' to 'vendor'
 
 def vendor_update_view(request, id):
     vendor = Vendor.objects.get(id=id)
@@ -34,10 +34,10 @@ def vendor_update_view(request, id):
     else:
         form = VendorUploadForm(instance=vendor)
 
-    return render(request, "vendor/edit_vendor.html", {'form': form})
+    return render(request, "vendors/edit_vendor.html", {'form': form})
 
 def delete_vendor(request, id):
     vendor = Vendor.objects.get(id=id)  # Changed 'product' to 'vendor'
     vendor.delete()
-    return redirect("vendors_list")  # Redirect to the list of vendors after deleting
+    return redirect("vendor_list")  # Redirect to the list of vendors after deleting
 

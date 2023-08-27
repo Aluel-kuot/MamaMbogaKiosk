@@ -26,7 +26,6 @@ def customer_detail(request , id):
 
 def customer_update_view(request, id):
     customer = Customer.objects.get(id=id)
-
     if request.method == 'POST':
         form = CustomerForm(request.POST, instance=customer)
 

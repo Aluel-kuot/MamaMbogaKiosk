@@ -4,7 +4,7 @@ from .models import Categories
 
 
 # Create your views here.
-def categories_upload_view(request):
+def category_upload_view(request):
     if request.method =="POST" :
         form= CategoriesUploadForm(request.POST)
         if form.is_valid():
@@ -12,17 +12,17 @@ def categories_upload_view(request):
     else:
         form = CategoriesUploadForm()
         
-    return render(request, 'categories/categories_upload.html', {'form': form})
+    return render(request, 'categories/category_upload.html', {'form': form})
 
 
-def categories_list(request):
+def category_list(request):
     categories = Categories.objects.all()
-    return render(request, 'categories/categories_list.html', {'categories':categories})
+    return render(request, 'categories/category_list.html', {'categories':categories})
 
 
 def category_detail(request , id):
     category = Categories.objects.get(id=id)
-    return render(request , 'categories/categories_detail.html',{'category':category})
+    return render(request , 'categories/category_detail.html',{'category':category})
 
 
 
@@ -45,4 +45,4 @@ def category_update_view(request, id):
 def delete_category(request, id):
     product= Categories.objects.get(id=id)
     product.delete()
-    return redirect("category_list_view")
+    return redirect("category_list")
