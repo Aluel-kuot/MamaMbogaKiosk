@@ -49,5 +49,11 @@ def add_to_cart(request, id):
         date_added=datetime.now(),
     )
     cart_item.save()
-
     return redirect("products_list")
+
+def get_total(self):
+    products=self.products.all()
+    total=0
+    for product in products:
+        total=product.price
+    return total
