@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CustomerSerializer,ProductSerializer,CartSerializer,OrderSerializer
+from .serializers import CustomerSerializer,ProductSerializer,CartSerializer,OrderSerializer,CartsSerializer
 from customer.models import Customer
 from rest_framework import status
 from rest_framework import serializers
@@ -155,18 +155,38 @@ class OrderDetailView(APIView):
         order.delete()
         return Response(" Order Deleted", status=status.HTTP_204_No_CONTENT)     
  
-  
+
+class AddToCartView(APIView):
+     def post(self,request,id,format=None):
+        cart_id=request.data["cart_id"]
+        product_id=request.data["product_id"]
+        cart=Cart.objects.get(id=cart_id)
+        product=Product.objects.get(id=product_id)
+        updated_cart=Cart.add_product(product)
+        serializer=CartsSerializer(updated_cart)
+        return Response(serializer.data)  
 
 
-        
-# class AddtoCartView(APIView)      :
-#      def post(self,request,id,format=None):
-#         cart_id=request.datag["cart_id"]
-#         product_id=request.datag["product_id"]
-#         cart=Cart.objects.get(id=cart_id)
-#         product=Product.objects.get(id=product_id)
-#         updated_cart=Cart.add_product(product)
-#         serializer=CartSerializer(updated_cart)
-#         return Response(serializer.data)   
+class RemoveProductView(APIView):
+     def delete(self,request,id,format=None):
+        cart_id=request.data["cart_id"]
+        product_id=request.data["product_id"]
+        cart=Cart.objects.get(id=cart_id)
+        product=Product.objects.get(id=product_id)
+        updated_cart=Cart.delete_product(product)
+        serializer=CartsSerializer(updated_cart)
+        return Response(serializer.data)  
+
+
+class CheckoutView(APIView):
+     def put(self,request,id,format=None):
+        cart_id=request.data["cart_id"]
+        order_id=request.data["order_id"]
+        cart=Cart.objects.get(id=cart_id)
+        order=Order.objects.get(id=order_id)
+        updated_cart=Cart.create_order(order)
+        serializer=CartsSerializer(updated_cart)
+        return Response(serializer.data)  
+
         
 # Create your views here.
